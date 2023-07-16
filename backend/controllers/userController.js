@@ -4,7 +4,7 @@ const Booking = require('../models/appointment')
 const asyncHandler = require('express-async-handler')
 const jwt = require('jsonwebtoken')
 var bcrypt = require('bcryptjs');
-JWT_SECRET = "hdbnmhuyr879376xhhskbbm6840820"
+
 const moment = require('moment');
 
 const getUser = asyncHandler(async(req,res)=>{
