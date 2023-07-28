@@ -11,7 +11,8 @@ import Header from './components/header';
 import UserPublicRout from './components/routes/userpublicRout';
 import UserProtectRout from './components/routes/userprotectRout';
 import DeanPublicRout from './components/routes/deanpublic';
-
+import StudentProtectRout from './components/routes/studentprotect';
+import DeanProtectRout from './components/routes/deanprotect';
 function App() {
   return (
     <>
@@ -19,48 +20,75 @@ function App() {
       <BrowserRouter>
         <Header/>
           <Routes>
-            <Route path = '/' 
-              element={               
-                <UserPublicRout>
-                  <Register/>
-                </UserPublicRout>                                  
-            }/>
-            <Route path = '/login' 
-              element={
-                <UserPublicRout>
-                   <Login/> 
-                </UserPublicRout>   
-            }/>
             
-            <Route path = '/alldeans' 
-              element={
-                <UserProtectRout>
-                  <AllDeanpage/>
-                </UserProtectRout>                
-            }/> 
-            <Route path = '/alldeans' 
-              element={
-                <UserProtectRout>
-                  <AllDeanpage/>
-                </UserProtectRout>                
-            }/>       
-            <Route path = '/your-appointment' 
-                element={<YourBooking />}/>  
+              <Route path = '/' 
+                element={               
+                  <UserPublicRout>
+                    <Register/>
+                  </UserPublicRout>                                  
+              }/>
+              <Route path = '/login' 
+                element={
+                  <UserPublicRout>
+                    <Login/> 
+                  </UserPublicRout>   
+              }/>
+              
+              <Route path = '/alldeans' 
+                element={
+                  <UserProtectRout>
+                    <StudentProtectRout>
+                      <AllDeanpage/>
+                    </StudentProtectRout> 
+                  </UserProtectRout>                
+              }/> 
+              <Route path = '/alldeans' 
+                element={
+                  <UserProtectRout>
+                    <StudentProtectRout>
+                      <AllDeanpage/>
+                    </StudentProtectRout>
+                  </UserProtectRout>                 
+              }/>       
+              <Route path = '/your-appointment' 
+                  element={
+                    <UserProtectRout>
+                      <StudentProtectRout>
+                        <YourBooking />
+                      </StudentProtectRout>
+                    </UserProtectRout>    
+              }/>       
+            
           </Routes>
 
             
           <Routes>
-              
-            <Route path = '/fordean/' 
-              element={ 
-                <UserProtectRout>
-                  <Fordean/>
-                </UserProtectRout>
-              }>
-              <Route path = 'cancelappointment' element = {<Fordean/>}/>
-              <Route path = 'changestatus' element = {<Fordean/>}/>
-                
-            </Route>
+            
+              <Route path = '/fordean/' 
+                element={ 
+                  <UserProtectRout>
+                    <DeanProtectRout> 
+                      <Fordean/>
+                    </DeanProtectRout>    
+                  </UserProtectRout>
+                }>
+                <Route path = 'cancelappointment' 
+                  element = {
+                    <UserProtectRout>
+                      <DeanProtectRout> 
+                        <Fordean/>
+                      </DeanProtectRout>    
+                    </UserProtectRout>
+                }/>
+                <Route path = 'changestatus' 
+                    element = {
+                      <UserProtectRout>
+                        <DeanProtectRout> 
+                          <Fordean/>
+                        </DeanProtectRout>    
+                      </UserProtectRout>}/>
+                  
+              </Route>
             
           </Routes>
             
