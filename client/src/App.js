@@ -57,6 +57,14 @@ function App() {
                         <YourBooking />
                       </StudentProtectRout>
                     </UserProtectRout>    
+              }/> 
+              <Route path = '/your-appointment' 
+                  element={
+                    <UserProtectRout>
+                      <StudentProtectRout>
+                        <YourBooking />
+                      </StudentProtectRout>
+                    </UserProtectRout>    
               }/>       
             
           </Routes>

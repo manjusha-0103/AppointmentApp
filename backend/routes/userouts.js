@@ -4,7 +4,8 @@ const {getUser,
     registerUser,
     loginUser,
     yourAppointment,
-    bookAppointment
+    bookAppointment,
+    cancelAppointmentby
 } = require('../controllers/userController')
 
 const {
@@ -23,7 +24,7 @@ router.post('/login',loginUser)
 router.get('/alldeans',protect,getUser);
 router.post('/alldeans',protect,bookAppointment);
 router.post('/your-appointment',protect,yourAppointment);
-
+router.post('/your-appointment',protect,cancelAppointmentby);
 //Dean Routs
 //router.get('/fordean/',protect,pendingAppointment);
 router.post('/fordean/',protect,pendingAppointment)

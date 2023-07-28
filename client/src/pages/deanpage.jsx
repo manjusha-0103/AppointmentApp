@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react'
 import './deanpage.css';
+
 import { useState } from 'react';
 import axios from 'axios';
 import {Link,useParams,useNavigate} from 'react-router-dom';
@@ -14,9 +15,9 @@ const Card = ({props})=>{
     const token = JSON.parse(localStorage.getItem('token'));
     //console.log(date)
     const requestData ={
-      dean : props.uniid,
-      appointmentDate:date,
-      user : token.uniid,
+                 dean : props.uniid,
+      appointmentDate : date,
+                 user : token.uniid,
     }
     
     try{
@@ -59,6 +60,7 @@ const Card = ({props})=>{
               />
             </div >
             <button type = 'submit'className='book'>Book Appointmnet</button>
+            
           </form>
           
         </div>

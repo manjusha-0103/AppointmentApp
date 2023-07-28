@@ -3,7 +3,7 @@ import moment from 'moment';
 import axios from 'axios';
 import './yourbooking.css'
 import ArrowCircleDownIcon from '@mui/icons-material/ArrowCircleDown';
-import './yourbooking.css';
+
 
 
 const ForAppointment =(props)=>{
@@ -25,7 +25,7 @@ const ForAppointment =(props)=>{
       });
 
       if(res.data.success){
-        alert('Appointmnet is successfully deletd')
+        alert('Appointmnet is successfully deleted')
       }
       else{
         alert('Something went wrong')

@@ -254,9 +254,9 @@ const availableAppoinment =async(date,dean) =>{
 const yourAppointment =asyncHandler(async (req,res) =>{
     try{
         //const {} = req.body
-        //console.log(req.body.data.uniid);
-        
-        const cursor= await (Booking.find({user: req.body.data.uniid}))
+        //await console.log(req.body.data.uniid);
+        const user = req.body.data?.uniid
+        const cursor= await (Booking.find({user:user,appointmentstatus:'pending'}))
         console.log(cursor)
         if(cursor){
             res.status(201).send({
@@ -282,6 +282,35 @@ const yourAppointment =asyncHandler(async (req,res) =>{
     }
 })  
 
+const cancelAppointmentby = asyncHandler(async(req,res)=>{
+    try{
+        const id = req.body?.dean;
+        const date = req.body?.date;
+        //console.log(id)
+        const cursor = await( (Booking.find({dean : id,appointmentDate:date})).deleteOne({appointmentstatus:"pending"}));
+        console.log(cursor)
+        if(cursor){
+            res.status(200).send({
+                success : true,
+                message: "Appoinment is canceled successfully..."
+            
+                }
+            )
+        }
+        else{
+            res.status(400).send({
+                success : true,
+                message: "Problem in canceling the appoinment"
+            
+                }
+            )
+        }
+    }
+    catch(error){
+        res.status(500)
+        console.log(error);
+    }
+})
 
 
 
@@ -299,5 +328,6 @@ module.exports={
     //loginDean,
     updateUser,
     bookAppointment,
-    yourAppointment
+    yourAppointment,
+    cancelAppointmentby
 }

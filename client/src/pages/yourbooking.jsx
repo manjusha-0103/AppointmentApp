@@ -6,7 +6,30 @@ import moment from 'moment/moment';
 
 const Bookings =(props)=>{
   const [open,setOpen] = useState(true)
-  //console.log(props.uniid)
+
+  const CancelAppointmnet =async()=>{
+    const token = JSON.parse(localStorage.getItem('token'));
+    const reqdata = {
+      dean : props.props.dean,
+      date : props.props.appointmentDate
+
+    }
+   // console.log(props.props._id)
+    const res = await axios.post('/api/users/your-appointment',
+    reqdata,
+    {headers :
+      {
+        Authorization:`Bearer ${token['token']}`,
+      }
+    });
+
+    if(res.data.success){
+      alert('Appointmnet is successfully canceled')
+    }
+    else{
+      alert('Something went wrong')
+    }
+}
 
   return(
     <>
@@ -23,6 +46,9 @@ const Bookings =(props)=>{
                 <h2>Your Appointmment is with {props.props.dean}</h2>
                 <h3>Date : {moment(props.props.appointmentDate).format("DD-MM-YYYY")}</h3>
                 <p>Time : 10AM to 11AM</p>
+                <div >
+                  <button onClick={CancelAppointmnet} style={{marginLeft: '0%'}}className='cancelbt'>Cancel Appointmnet</button>
+                </div>
               </div>
             </div>
           }
@@ -35,7 +61,7 @@ const YourBooking = () => {
   const [yes,isappointment ] = useState(false)
   const getAppointmnet = async()=>{
     const token = JSON.parse(localStorage.getItem('token'));
-    //console.log(token)
+    console.log(token)
       
     const reqdata = {
       data : token
