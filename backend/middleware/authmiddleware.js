@@ -1,7 +1,7 @@
 const jwt = require('jsonwebtoken');
 const asyncHandler = require('express-async-handler');
 const User = require('../models/userModels')
-JWT_SECRET = "hdbnmhuyr879376xhhskbbm6840820"
+
 const protect = asyncHandler(async (req,res,next) =>{
     let token
     if(req.headers.authorization &&
