@@ -1,7 +1,10 @@
-import React from 'react'
-import { useState } from 'react'
+import React ,{ useState } from 'react'
+
 import { Link, useNavigate } from 'react-router-dom'
 import axios from 'axios';
+
+
+
 const Login = () => {
   const [uniid, setUniid] = useState('');
   const [password, setPassword] = useState('');
@@ -19,13 +22,13 @@ const Login = () => {
         {headers :{Authorization :"Bearer"+localStorage.getItem("token")}});
         console.log(response.data);
         if (response.data.success){
-            localStorage.setItem('token',response.data.token); 
+            localStorage.setItem('token',JSON.stringify(response.data)); 
             alert(response.data.message)
             if(response.data.isStudent){
               navigate('/alldeans');
             }
             else{
-              navigate('/fordean');
+              navigate('/fordean/');
             }
             
         }

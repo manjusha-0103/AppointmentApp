@@ -1,5 +1,4 @@
-import React from 'react'
-import { useState } from 'react'
+import React ,{ useState } from 'react' 
 import axios from 'axios';
 import { Link ,useNavigate} from 'react-router-dom'
 const Register = () => {
@@ -39,7 +38,7 @@ const Register = () => {
     return (
         <div style={{marginTop:"5%",marginLeft:"40%"}}>
             <h3>ReGiStEr HeRe As A StUdEnT oR dEaN</h3>
-            <form onSubmit={handleSubmit}>
+            <form  onSubmit={handleSubmit} method ='POST'>
                 <div>
                     <label htmlFor="uniid">University ID : </label>
                     <input 

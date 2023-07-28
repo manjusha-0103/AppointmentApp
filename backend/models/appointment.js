@@ -9,6 +9,7 @@ const bookingSchema = new mongoose.Schema(
     user: {
       type: String,
       required: true,
+
     },
     
     appointmentDate: {
@@ -16,10 +17,10 @@ const bookingSchema = new mongoose.Schema(
       required: true,
       
     },
-    time :{
-      type : String,
-      required: true
-    },
+    //time :{
+    //  type : String,
+    //  required: true
+    //},
     appointmentstatus: {
       type: String,
       enum: ["pending", "Done", "cancelled"],

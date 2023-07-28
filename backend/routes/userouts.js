@@ -3,37 +3,31 @@ const router = express.Router()
 const {getUser,
     registerUser,
     loginUser,
-    //loginDean,
+    yourAppointment,
     bookAppointment
 } = require('../controllers/userController')
 
-const {protect} = require('../middleware/authmiddleware')
-router.post('/',registerUser);
-router.post('/login',loginUser)//,loginDean);
-//router.get('/alldeans',getUser);
-
 const {
-    getAllappointments
+    pendingAppointment,
+    changeAppointmentStatus,
+    cancelAppointment,
 } = require('../controllers/deanController');
 
-router.get('/fordean',getAllappointments);
+const {protect} = require('../middleware/authmiddleware')
 
+//Common Routs
+router.post('/',registerUser);
+router.post('/login',loginUser)
+
+//User Routs
 router.get('/alldeans',protect,getUser);
-router.post('/bookAppointment',bookAppointment);
-//router.get('/me',protect);
+router.post('/alldeans',protect,bookAppointment);
+router.post('/your-appointment',protect,yourAppointment);
 
-/**router.post('/set',(req,res)=>{
-    res.status(200).json({message :'set golas'})
-})
-  
-router.put('/:id',(req,res)=>{
-    res.status(200).json({message :`update golas at ${req.params._id}`})
-}) 
-
-router.delete('/:id',(req,res)=>{
-    res.status(200).json({message :`delete golas at ${req.params._id}`})
-})
-**/
-
+//Dean Routs
+//router.get('/fordean/',protect,pendingAppointment);
+router.post('/fordean/',protect,pendingAppointment)
+router.post('/fordean/cancelappointment',cancelAppointment);
+router.put('/fordean/changestatus',changeAppointmentStatus);
 
 module.exports = router

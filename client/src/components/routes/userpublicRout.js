@@ -3,8 +3,13 @@ import { Navigate } from 'react-router-dom'
 
 function UserPublicRout({children}) {
   if (localStorage.getItem("token")){
-    return <Navigate to ='/alldeans'/>
-  }
+    if(JSON.parse(localStorage.getItem("token")).isStudent){
+      return <Navigate to ='/alldeans'/>    
+    }
+    else{
+      return <Navigate to ='/fordean/'/>   
+    }
+  } 
   else{
     return  (children)
   }

@@ -3,11 +3,10 @@ import { Navigate } from 'react-router-dom'
 
 function UserProtectRout({children}) {
   if (localStorage.getItem("token")){
-    return (children);
+      return (children); 
   }
   else{
-    return <Navigate to ="/login"/>
-    
+    return <Navigate to ="/login"/> 
   }
     
   

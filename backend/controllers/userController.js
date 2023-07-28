@@ -7,57 +7,56 @@ var bcrypt = require('bcryptjs');
 JWT_SECRET = "hdbnmhuyr879376xhhskbbm6840820"
 const moment = require('moment');
 
+
+
+
 const getUser = asyncHandler(async(req,res)=>{
     try{
         const cursor= await Dean.find({})
-        console.log(cursor)
+        //console.log(cursor)
         if(cursor){
             res.status(200).send({
                 data : cursor,
-                success : true,
-                message: "Deans list fetched successfully"
+             success : true,
+             message : "Deans list fetched successfully"
             })
         }
         else{
-            res.status(400).send({
-                success:false,
-                message: "Dean's data not found"
+            res.status(201).send({
+                success : false,
+                message : "Dean's data not found"
             })
         }
     }
     catch(error){
         console.log(error)
         res.status(500).send({
-            success: false,
+            success : false,
             error,
-            message: "error while fetching data"
+            message : "error while fetching data"
         })
     }
 })
 
 const registerUser = asyncHandler(async(req,res) =>{
-    console.log(req.body);
+    //console.log(req.body);
     const {uniid, isStudent,isDean,password} = req.body
     
 
     if(!uniid || !password){
-        res.status(400)
+        res.status(201)
         throw new Error ('Please add all the fields')
     }
-    //const userExists = await User.findOne({uniid})
-   // if (userExists){
-    //    res.status(400)
-    //    throw new Error ('User already Exists')
-   // }
+    
     const salt = await bcrypt.genSalt(10)
-    console.log(salt)
+    //console.log(salt)
     const hashedPassword = await bcrypt.hash(password,salt)
     if(isDean){
         const userExists = await Dean.findOne({uniid})
         if (userExists){
             res.status(200).send({
-                success: false,
-                message: 'Dean already Exists'
+                success : false,
+                message : 'Dean already Exists'
             })
             throw new Error ('Dean already Exists')
         }
@@ -70,11 +69,11 @@ const registerUser = asyncHandler(async(req,res) =>{
             })
             if(dean){
                 res.status(201).send({
-                    success: true,
+                    success : true,
                     message : "Dean registered succcessfully",
-                    _id : dean._id ,
-                    uniid: dean.uniid,
-                    token : generateToken(dean._id)
+                        _id : dean._id ,
+                      uniid : dean.uniid,
+                      token : generateToken(dean._id)
                 })
             }
             
@@ -89,7 +88,7 @@ const registerUser = asyncHandler(async(req,res) =>{
         if (userExists){
             res.status(200).send({
                 success : false,
-                message:"Student already Exists"
+                message : "Student already Exists"
             })
             throw new Error ('User already Exists')
         }
@@ -103,12 +102,12 @@ const registerUser = asyncHandler(async(req,res) =>{
         
             if(user){
                 res.status(201).send({
-                    success: true,
+                    success : true,
                     message : "Student registered succcessfully",
-                    _id : user._id ,
-                    isStudent: user.isStudent,
-                    uniid: user.uniid,
-                    token : generateToken(user._id)
+                        _id : user._id ,
+                  isStudent : user.isStudent,
+                      uniid : user.uniid,
+                      token : generateToken(user._id)
                 })
             }
             
@@ -132,31 +131,33 @@ const loginUser= asyncHandler(async(req,res)=>{
 
     const user = await (User.findOne({uniid}))
     if(user && (await bcrypt.compare(password,user.password)) && user.isStudent){
-        res.send({
-            success: true,
-            message : "Student logged in succcessfully",
-            _id : user._id,
-            isStudent: user.isStudent,
-            uniid: user.uniid,
-            token : generateToken(user._id)
+        res.status(201).send({
+             success : true,
+             message : "Student logged in succcessfully",
+                 _id : user._id,
+           isStudent : user.isStudent,
+               uniid : user.uniid,
+               token : generateToken(user._id)
+        
         })
     }
     
     else{
         const dean = await (Dean.findOne({uniid}))
         if(dean && (await bcrypt.compare(password,dean.password))){
-            res.send({
-                success: true,
+            res.status(201).send({
+                success : true,
                 message : "Dean logged in succcessfully",
-                _id : dean._id,
-                isStudent: false,
-                uniid: dean.uniid,
-                token : generateToken(dean._id)
+                    _id : dean._id,
+              isStudent : false,
+                  uniid : dean.uniid,
+                  token : generateToken(dean._id)
+            
             })
         }
         else{
-            res.status(200).send({
-                success: false,
+            res.status(201).send({
+                success : false,
                 message : "Invalid credential",
             })
             throw new Error('Invalid credential');
@@ -188,52 +189,54 @@ const loginUser= asyncHandler(async(req,res)=>{
 })*/
 const bookAppointment= asyncHandler(async(req,res)=>{
     
-    //req.body.time = moment(req.body.time, "HH:mm").toISOString();
+    
     try{
-        req.body.appointmentDate = moment(req.body.appointmentDate, "DD-MM-YYYY").toISOString();
-        req.body.time = moment(req.body.time, "HH:mm").toISOString();
-        req.body.appointmentstatus =  "pending"
-
-
-        if (availableAppoinment(req.body.appointmentDate,req.body.time,req.body.dean)){
-            const newappointment = new Booking(req.body)
-            req.body.appointmentstatus =  "approved";
-            await newappointment.save()
-           // await newappointment.updateOne(req.body.dean);
-            
-            res.status(200).send({
-                success :true,
-                message : "appointment book succesfully"
-            });
+        console.log(req.body)
+        req.body.appointmentDate = moment(req.body.appointmentDate, "YYYY-MM-DD").toISOString();
+        req.body.appointmentstatus =  "pending";
+        const c = await (Booking.find({}).count()) ;
+        if (c === 0){
+            const newappointment = new Booking(req.body);
+            await newappointment.save();
         }
         else{
-            res.status(200).send({
-                success :false,
-                message:"Appoinrment is not available"
-            }); 
-        }
+        
+            const available = await (availableAppoinment(req.body.appointmentDate,req.body.dean));
+            console.log(available);
+            if (available){
+                const newappointment = new Booking(req.body)
+                await newappointment.save()
+                res.status(201).send({
+                    success :true,
+                    message : "appointment book succesfully"
+                });
+            }
+            else{
+                res.status(201).send({
+                    success :false,
+                    message:"Appoinrment is not available"
+                }); 
+            }
+        }    
     }
         
         
     catch(error){
         console.log(error);
-        res.status(500)
+        res.status(500);
         throw new Error("Error while booking the appoinment")
         
     }
 })
-const availableAppoinment =(date,time,dean) =>{
+const availableAppoinment =async(date,dean) =>{
     
-       // const tdate = moment(date, "DD-MM-YY").toISOString()
-        //const fromtime = moment(time,'HH:mm').subtract(1,"hours").toISOString();
-        //const totime = moment(time,"HH:mm").subtract(1,"hours").toISOString()
-        //const dean = dean
-        const appoinment = Booking.findOne({
-            dean,
-            date,
-            time
-        })
-        if (appoinment.length >0){
+        const appoinments = await((Booking.findOne({
+                       dean : dean,
+            appointmentDate : date,
+            
+        }).count()))
+        console.log(appoinments)
+        if (appoinments >0){
             return false
                 //res.status(200).json({
                 //message:"Appoinrment is not available"
@@ -248,6 +251,40 @@ const availableAppoinment =(date,time,dean) =>{
 
     
 }
+const yourAppointment =asyncHandler(async (req,res) =>{
+    try{
+        //const {} = req.body
+        //console.log(req.body.data.uniid);
+        
+        const cursor= await (Booking.find({user: req.body.data.uniid}))
+        console.log(cursor)
+        if(cursor){
+            res.status(201).send({
+                data : cursor,
+                success : true,
+                message: "Appointmnet list fetched successfully"
+            })
+        }
+        else{
+            res.status(201).send({
+                success:false,
+                message: "You haven't booked any appointmnet"
+            })
+        }
+    }
+    catch(error){
+        console.log(error)
+        res.status(500).send({
+            success: false,
+            error,
+            message: "error while fetching data"
+        })
+    }
+})  
+
+
+
+
 
 
 const updateUser =asyncHandler(async (req,res) =>{
@@ -261,5 +298,6 @@ module.exports={
     loginUser,
     //loginDean,
     updateUser,
-    bookAppointment
+    bookAppointment,
+    yourAppointment
 }

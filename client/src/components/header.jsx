@@ -1,6 +1,7 @@
 import React from 'react'
 import "./header.css";
 import { useNavigate } from 'react-router-dom';
+
 const Header = () => {
     const navigate = useNavigate()
     const handleLogout =async()=>{
@@ -8,9 +9,8 @@ const Header = () => {
         alert('You have logout successfully..');
         navigate('/login')
     }
+    const t = JSON.parse(localStorage.getItem("token"));
     const handleLogoutbt=async()=>{
-        const t = localStorage.getItem("token");
-        
         if(t){
             return true
         }
@@ -19,21 +19,27 @@ const Header = () => {
         }
     }
 
+
+    const homebt = async()=>{
+        if(t['isStudent']){
+            navigate('/alldeans')
+        }
+        else{
+            navigate('/fordean')
+        }
+    }
+
     return (
         <div>    
             <div className='layout'>
-            {handleLogoutbt?
+            {handleLogoutbt &&
                 <button className='home-bt'
-                >Home</button>
-            
-            :<></>
-                
+                onClick={()=>homebt()}>Home</button>
             }
+            
             <h2 className='app-heading'>Apppointment App</h2>
-            {handleLogoutbt?
-                <button className="logout-bt"onClick ={handleLogout}>Logout</button>
-                
-                :<></>
+            {handleLogoutbt &&
+                <button className="logout-bt"onClick ={handleLogout}>Logout</button>  
             }
             </div>
         </div>
