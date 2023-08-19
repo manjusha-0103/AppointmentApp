@@ -4,10 +4,11 @@ const Booking = require('../models/appointment')
 const asyncHandler = require('express-async-handler')
 const jwt = require('jsonwebtoken')
 var bcrypt = require('bcryptjs');
+
 const moment = require('moment');
 
 const otpGenerator = require('otp-generator')
-JWT_SECRET = "hdbnmhuyr879376xhhskbbm6840820"
+
 const sendEmail = require('../utils/sendEmail')
 
 
