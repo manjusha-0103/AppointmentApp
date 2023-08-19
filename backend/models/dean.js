@@ -1,5 +1,12 @@
 const mongoose = require('mongoose')
-const deanSchema = new mongoose.Schema({
+const deanSchema = new mongoose.Schema(
+  {
+
+    email : {
+      type : String,
+      required : [true,'Please add a your university ID'],
+      unique: true, 
+    },
     uniid: { 
       type: String, 
       required: true, 

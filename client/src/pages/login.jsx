@@ -63,8 +63,9 @@ const Login = () => {
                     onChange={(e) => setPassword(e.target.value)} required />
               </div>
                     
-              <button type ="submit">Login</button>              
-              <Link to = "/">  Not registered ,register here</Link>
+              <button type ="submit">Login</button> <br />   
+              <Link to = "/pre-reset-pass"style={{color: "black",}}> Forgrt Password</Link><br/>
+              <Link to = "/"style={{color: "black",}}>  Not registered ,register here</Link>
           </form>
       </div>
     </div>

@@ -1,5 +1,11 @@
 const mongoose = require('mongoose')
-const userSchema = mongoose.Schema({
+const userSchema = mongoose.Schema(
+    {
+        email : {
+            type : String,
+            required : [true,'Please add a your email ID'],
+            unique: true, 
+        },
     
         uniid : {
             type : String,

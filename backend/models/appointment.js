@@ -2,11 +2,20 @@ const mongoose = require('mongoose')
 
 const bookingSchema = new mongoose.Schema(
   {
+    dean_mail: {
+      type: String,
+      required: true,
+    },
     dean: {
       type: String,
       required: true,
     },
     user: {
+      type: String,
+      required: true,
+
+    },
+    user_mail: {
       type: String,
       required: true,
 
@@ -17,10 +26,10 @@ const bookingSchema = new mongoose.Schema(
       required: true,
       
     },
-    //time :{
-    //  type : String,
-    //  required: true
-    //},
+    /*meetlink :{
+      type : String,
+      required: true
+    },*/
     appointmentstatus: {
       type: String,
       enum: ["pending", "Done", "cancelled"],

@@ -3,6 +3,8 @@ const User = require('../models/userModels')
 const Booking = require('../models/appointment')
 const asyncHandler = require('express-async-handler')
 const moment = require('moment');
+const sendEmail = require("../utils/sendEmail.js");
+
 /*const LocalStorage = require('node-localstorage').LocalStorage;
 const localStorage = new LocalStorage('./localStorage');*/
 
@@ -40,6 +42,7 @@ const pendingAppointment= asyncHandler(async(req,res)=>{
 const changeAppointmentStatus = asyncHandler(async(req,res)=>{
     try{
         const id = req.body._id
+        
         const cursor = await(Booking.findById({_id : id}).updateOne({appointmentstatus:"Done"}))
         if(cursor.appointmentstatus == "Done"){
             res.status(200).send(
@@ -60,6 +63,19 @@ const cancelAppointment = asyncHandler(async(req,res)=>{
         const cursor = await( Booking.findByIdAndRemove({_id : id}));
         console.log(cursor)
         if(cursor){
+            const date = moment(cursor.appointmentDate).utc().format("DD-MM-YYYY")
+            const msg = `
+                <div>
+                    <h1 style="color: orange; text-align:center">Appointment with ${cursor.dean}! is canceled. </h1>
+                </div>
+                
+                <div style="text-align: center; font-size: 18px">
+                    <p>Your appointment with  ${cursor.dean}! on ${date} at 10AM is canceled</p>
+                    
+                </div>
+            `;
+            const subject =  `AppointmenApp|| Registration successfull`;
+            sendEmail(cursor.user_mail,subject,"HELLO!!",msg)
             res.status(200).send({
                 success : true,
                 message: "Appoinment is canceled successfully..."
@@ -82,9 +98,12 @@ const cancelAppointment = asyncHandler(async(req,res)=>{
     }
 })
 
+const creatGmeet = asyncHandler(async(req,res)=>{})
+
 
 module.exports={
     pendingAppointment,
     changeAppointmentStatus,
     cancelAppointment,
+    creatGmeet
 }

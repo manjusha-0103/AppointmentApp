@@ -5,12 +5,19 @@ import { useNavigate } from 'react-router-dom';
 const Header = () => {
     const navigate = useNavigate()
     const handleLogout =async()=>{
-        localStorage.clear("token");
-        alert('You have logout successfully..');
-        navigate('/login')
+        if(localStorage.getItem("token")){
+            localStorage.clear("token");
+            alert('You have logout successfully..');
+            navigate('/login')
+        }
+        else{
+            alert("First logged in with your account")
+            navigate("/login")
+        }
     }
-    const t = JSON.parse(localStorage.getItem("token"));
+    
     const handleLogoutbt=async()=>{
+        const t = localStorage.getItem("token");
         if(t){
             return true
         }
@@ -21,11 +28,15 @@ const Header = () => {
 
 
     const homebt = async()=>{
+        const t = JSON.parse(localStorage.getItem("token"));
         if(t['isStudent']){
             navigate('/alldeans')
         }
-        else{
+        else if(t['isDean']){
             navigate('/fordean')
+        }
+        else{
+            navigate('/login')
         }
     }
 

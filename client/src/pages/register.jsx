@@ -2,6 +2,7 @@ import React ,{ useState } from 'react'
 import axios from 'axios';
 import { Link ,useNavigate} from 'react-router-dom'
 const Register = () => {
+    const [email, setEmail] = useState('');
     const [uniid, setUniid] = useState('');
     const [isStudent, setIsStudent] = useState(false);
     const [isDean, setIsDean] = useState(false);
@@ -12,6 +13,7 @@ const Register = () => {
         event.preventDefault();
 
         const requestData = {
+            email,
             uniid,
             isStudent,
             isDean,
@@ -39,6 +41,14 @@ const Register = () => {
         <div style={{marginTop:"5%",marginLeft:"40%"}}>
             <h3>ReGiStEr HeRe As A StUdEnT oR dEaN</h3>
             <form  onSubmit={handleSubmit} method ='POST'>
+                <div>
+                    <label htmlFor="email">Email : </label>
+                    <input 
+                        type="text" 
+                        id="email" 
+                        value={email} 
+                        onChange={(e) => setEmail(e.target.value)} required />
+                </div>
                 <div>
                     <label htmlFor="uniid">University ID : </label>
                     <input 
@@ -70,7 +80,7 @@ const Register = () => {
                     <input type="password" id="password" value={password} onChange={(e) => setPassword(e.target.value)} required />
                 </div>
                 <button type="submit">Register</button>
-                <Link to ="/login"> Already registered login here</Link>
+                <Link to ="/login" style={{color: "black",}}> Already registered login here</Link>
 
             </form>
 

@@ -9,11 +9,13 @@ import ArrowCircleDownIcon from '@mui/icons-material/ArrowCircleDown';
 const ForAppointment =(props)=>{
   //console.log(props.props.dean);
   const [open,setOpen] = useState(true)
+  const [link, setLink] = useState(false)
 
   const cancelAppointmnet =async()=>{
       const token = JSON.parse(localStorage.getItem('token'));
       const reqdata = {
         _id: props.props._id,
+        
       }
       console.log(props.props._id)
       const res = await axios.post('/api/users/fordean/cancelappointment',
@@ -57,7 +59,7 @@ const ForAppointment =(props)=>{
     <>
       <div className ='booking' onClick={()=>setOpen(!open)}>
         Appointment with {props.props.user}
-        <div style={{marginLeft : '73%'}}>
+        <div style={{marginLeft : '45%'}}>
           <ArrowCircleDownIcon sx={{fontSize:'2rem'}}/>
         </div>
         
@@ -68,6 +70,7 @@ const ForAppointment =(props)=>{
                 <h2>Your Appointmment is with {props.props.user}</h2>
                 <h3>Date : {moment(props.props.appointmentDate).format("DD-MM-YYYY")}</h3>
                 <p>Time : 10AM to 11AM</p>
+                
                 <button onClick={changeStatus}className='donebt'>SET DONE</button>
                 <button onClick={cancelAppointmnet} className='cancelbt'>Cancel Appointmnet</button>
               </div>
@@ -120,19 +123,25 @@ const Fordean = () => {
   },[])
 
   return (
-    <div className='main-ct'>
-      <h1>YOUR PENDING APPOINTMENT</h1>
-      {ispendings?(
-        <>
-          {pendings && pendings.map((pending,idx) => (<ForAppointment key={idx} props = {pending}/>))}
-        </>):(
-          <div>
-            <h3>You don't have any pending appointmnet</h3>
-          </div>
-
-        )
+    <div className='main-block'>
+      <div className='main-ct'>
+        <h1>YOUR PENDING APPOINTMENTS</h1>
+        {ispendings?(
+          <>
+            {pendings && pendings.map((pending,idx) => (<ForAppointment key={idx} props = {pending}/>))}
+          </>):(
+            <div>
+              <h3>You don't have any pending appointmnet</h3>
+            </div>
+          ) 
+        } 
         
-      } 
+      </div>
+      <div className='main-dash'>
+        <div className='top'></div>
+
+      </div>
+      
     </div>
   )
 }

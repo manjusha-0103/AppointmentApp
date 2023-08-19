@@ -3,18 +3,37 @@ import './deanpage.css';
 
 import { useState } from 'react';
 import axios from 'axios';
-import {Link,useParams,useNavigate} from 'react-router-dom';
+import {Link,useNavigate} from 'react-router-dom';
 import moment from 'moment';
 
 const Card = ({props})=>{
   //const params = useParams()
   const [date,setDate] = useState({})
   const navigate = useNavigate()
-  
+
+  const minDate = () => {
+    const today = new Date().toISOString().split('T')[0];
+    return today;
+  };
+
+  const handleDateChange = (event) => {
+    const chosenDate = new Date(event.target.value);
+    const dayOfWeek = chosenDate.getDay();
+
+    if (dayOfWeek === 0 || dayOfWeek === 6) {
+      // If a weekend day is selected, don't update the state
+      alert('Weekend days are not allowed. Please choose a weekday.');
+    } else {
+      setDate(event.target.value);
+    }
+  };
+
   const bookAppointment = async()=>{
     const token = JSON.parse(localStorage.getItem('token'));
     //console.log(date)
     const requestData ={
+            user_mail : token.email,
+            dean_mail : props.email,
                  dean : props.uniid,
       appointmentDate : date,
                  user : token.uniid,
@@ -23,20 +42,19 @@ const Card = ({props})=>{
     try{
       const res = await axios.post('/api/users/alldeans',
         requestData,
-        
         {headers :{
           Authorization:`Bearer ${token['token']}`,
         }}
         );
-      console.log(res.data)
+      //console.log(res.data)
       if(res.data.success){
         
-        alert("Appointment is booked successfully")
-        //navigate('/alldeans/');
+        alert(res.data.message);
+        navigate('/your-appointment');
 
       }
       else{
-        alert("Appointment is not available")
+        alert(res.data.message);
         //navigate('/alldeans/')
       }
     }
@@ -50,13 +68,15 @@ const Card = ({props})=>{
           <h2 className='uId'>Dean's University ID : {props.uniid}</h2>
           <h3 className='avt'>Available Time : </h3>
           <div className='time'>
-            <p>Every Week,</p>
-            <p>Thursday and Friday : 10 AM to 11 AM</p>
+            <p>Monday to Friday</p>
+            <p>Time : 10 AM to 11 AM</p>
           </div>
           <form  onSubmit={bookAppointment} >
             <div className='date'>
-              <input type="date" 
-              onChange={(e) => setDate(e.target.value)}
+              <input 
+                type="date"
+                min = {minDate()} 
+                onChange={handleDateChange}
               />
             </div >
             <button type = 'submit'className='book'>Book Appointmnet</button>
@@ -99,7 +119,7 @@ const AllDeanpage = () => {
   return (
     <div>
       <div className='your'>
-        <Link to ='/your-appointment'><p>Your Appointments</p></Link>
+        <p><Link to ='/your-appointment'>Your Appointments</Link></p>
       </div>
       <div className='main-content'>
         {deans && deans.map((dean,idx) => (<Card key={idx}props={dean} />))}

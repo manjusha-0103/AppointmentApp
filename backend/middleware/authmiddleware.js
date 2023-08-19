@@ -2,6 +2,7 @@ const jwt = require('jsonwebtoken');
 const asyncHandler = require('express-async-handler');
 const User = require('../models/userModels')
 JWT_SECRET = "hdbnmhuyr879376xhhskbbm6840820"
+
 const protect = asyncHandler(async (req,res,next) =>{
     let token
     if(req.headers.authorization &&
@@ -26,5 +27,15 @@ const protect = asyncHandler(async (req,res,next) =>{
         }
     })
 
+const localVariables = asyncHandler(async (req, res, next)=>{
+        req.app.locals = {
+            OTP : null,
+            resetSession : false
+        }
+        next()
+})
 
-module.exports = {protect}
+module.exports = {
+    protect,
+    localVariables
+}
