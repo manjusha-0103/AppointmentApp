@@ -11,7 +11,7 @@ module.exports = async (email, subject, text, html) => {
         user: "Your mailID",
         pass: "Your pass",
       },
-      from: "manjushakatkhede96@gmail.com",
+      from:  "Your mailID",
     });
 
     await transporter.sendMail({
